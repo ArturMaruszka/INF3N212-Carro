@@ -5,7 +5,6 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import model.Pessoa;
 
 /**
@@ -41,10 +40,10 @@ public class CPessoa {
      * @param p
      */
     public void removePessoa(Pessoa p) {
-        this.removePessoa(p);
+        this.pessoas.remove(p);
     }//fim da public class remove
 
-    public ArrayList<Pessoa> getPesoas() {
+    public ArrayList<Pessoa> getPessoas() {
         return this.pessoas;
     }//fim do getPessoa
 

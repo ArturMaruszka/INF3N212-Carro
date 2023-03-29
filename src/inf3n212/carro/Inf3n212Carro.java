@@ -4,17 +4,28 @@
  */
 package inf3n212.carro;
 
+import controller.CCarro;
+import controller.CPessoa;
+
 /**
  *
  * @author 182120013
  */
 public class Inf3n212Carro {
+    public static CPessoa cadPessoa = new CPessoa();
+    public static CCarro cadCarro = new CCarro();
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        cadPessoa.mockPessoas();
+        cadCarro.mockCarros();
+        
+        System.out.println(cadPessoa.getPessoas());
+        System.out.println("---");
+        System.out.println(cadCarro.getCarros());
+        
     }//fim da main
     
-}//fim do programa
+}//fim da public class
