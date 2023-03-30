@@ -77,11 +77,11 @@ public class CPessoa {
         p1.setEndereco("Rua das Margaridas");
         addPessoa(p1);
         Pessoa p2 = new Pessoa();
-        p1.setIdPessoa(geraID());
-        p1.setCpf("85606196077");
-        p1.setNome("Madalena Espirito Santo");
-        p1.setTelefone("51988998899");
-        p1.setEndereco("Rua sem saída");
+        p2.setIdPessoa(geraID());
+        p2.setCpf("85606196077");
+        p2.setNome("Madalena Espirito Santo");
+        p2.setTelefone("51988998899");
+        p2.setEndereco("Rua sem saída");
         addPessoa(p2);
     }//fim do void
     
