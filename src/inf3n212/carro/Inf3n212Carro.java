@@ -8,6 +8,9 @@ import controller.CCarro;
 import controller.CPessoa;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import model.Carro;
+import model.Pessoa;
+import util.Validadores;
 
 /**
  *
@@ -39,7 +42,7 @@ public class Inf3n212Carro {
                         opSM = leiaNumInt();
                         switch (opSM) {
                             case 1:
-                                System.out.println("Cadastra");
+
                                 if (opM == 1) {
                                     cadastrarPessoa();
                                 } else {
@@ -49,14 +52,14 @@ public class Inf3n212Carro {
                                 break;
                             case 2:
                                 System.out.println("Edita");
-                                if (opM == 2) {
+                                if (opM == 1) {
                                     EditaPessoa();
                                 } else {
                                     EditaCarro();
                                 }
                                 break;
                             case 3:
-                                System.out.println("Lista");
+
                                 if (opM == 3) {
                                     ListarPessoa();
                                 } else {
@@ -83,9 +86,9 @@ public class Inf3n212Carro {
                     break;
 
                 case 0:
-                    System.out.println("\u001B[41m" + "Aplicação Encerrada Pelo usuário");
+                    System.out.println("Aplicação Encerrada Pelo usuário");
                 default:
-                    System.out.println("\u001B[41m" + "Добро пожаловать в товарищеский Советский Союз!");
+                    System.out.println("Добро пожаловать в товарищеский Советский Союз!");
             }//fim do shwitch
 
         } while (opM != 0); //fim do do
@@ -97,7 +100,7 @@ public class Inf3n212Carro {
         try {
             return leiaNum.nextInt();
         } catch (InputMismatchException i) {
-            System.out.println("\u001B[36m" + "Добро пожаловать в товарищеский Советский Союз!");
+            System.out.println("Добро пожаловать в товарищеский Советский Союз!");
         }
         return 99;
     }//fim do leiaNumInt
@@ -132,32 +135,162 @@ public class Inf3n212Carro {
     }
 
     private static void cadastrarPessoa() {
-        System.out.println("Pessoa");
+        System.out.println("Cadastro de Pessoa");
+        int idPessoa;
+        String nome;
+        String cpf;
+        String endereco;
+        String telefone;
+        boolean tcpf = true;
+        do {
+            System.out.print("Insira um cpf válido:");
+            cpf = leia.nextLine();
+            tcpf = Validadores.isCPF(cpf);
+            if (tcpf) {
+                if (cadPessoa.getPessoaCPF(cpf) != null) {
+                    System.out.println("CPF já cadastrado!!");
+                    if (!Deukk()) {
+                        return;
+                    }
+                } else {
+                    tcpf = false;
+                }
+            } else {
+                System.out.println("CPF inválido!");
+                if (!Deukk()) {
+                    return;
+                }
+                tcpf = true;
+            }
 
-    }
+        } while (tcpf);
+        System.out.print("Informe o nome: ");
+        nome = leia.nextLine();
+        System.out.print("Informe o Endereço: ");
+        endereco = leia.nextLine();
+        System.out.print("Informe o Telefone: ");
+        telefone = leia.nextLine();
+        idPessoa = cadPessoa.geraID();
+        Pessoa p = new Pessoa(idPessoa, nome, cpf, endereco, telefone);
+        cadPessoa.addPessoa(p);
+        System.out.println(p.getNome() + " cadastrado com sucesso");
+
+    }//fim cadastrar pessoa
 
     private static void EditaPessoa() {
-        System.out.println("Pessoa");
-    }
+        System.out.print("Editar cadastro");
+        boolean isCPF;
+        do {
+            System.out.print("Informe o CPF do ficheiro a ser editado: ");
+            String cpf = leia.nextLine();
+            isCPF = Validadores.isCPF(cpf);
+            if (isCPF) {
+                Pessoa p = cadPessoa.getPessoaCPF(cpf);
+                if (p != null) {
+                    System.out.println("Quais dados de "+p.getNome()+" deseja alterar?");
+                    System.out.println("1- Nome");
+                    System.out.println("2- Endereço");
+                    System.out.println("3- Telefone");
+                    System.out.println("4- Todos");
+                    System.out.println("0- Cancelar");
+                    System.out.print("Digite aqui: ");
+                    int op = leiaNumInt();
+                    if(op == 1 || op == 4){
+                        System.out.println("Informe o novo nome: ");
+                        p.setNome(leia.nextLine());
+                    }
+                    if(op == 2 || op == 4){
+                        System.out.println("Informe o novo Endereço: : ");
+                        p.setEndereco(leia.nextLine());
+                    }
+                    if(op == 3 || op == 4){
+                        System.out.println("Informe o novo Telefone: ");
+                        p.setTelefone(leia.nextLine());
+                    }
+                    if(op == 0){
+                        System.out.println("Operação cancelada pelo usuário.");
+                        isCPF = false;
+                    }
+                    if (op > 4){
+                        System.out.println("Opção inválida!");
+                        isCPF = false;
+                    }
+                } else {
+                    System.out.println("CPF não cadastrado.");
+                    isCPF = false;
+                }
+            } else {
+                System.out.println("CPF inválido.");
+                Deukk();
+            }
+        } while (isCPF);
+
+    }//fim do edita pessoa
 
     private static void EditaCarro() {
         System.out.println("cARRO");
     }
 
     private static void ListarPessoa() {
-        System.out.println("Pessoa");
-    }
+        System.out.println("Listar Pessoas");
+        for (Pessoa pessoa : cadPessoa.getPessoas()) {
+            System.out.println(pessoa.toString());
+        }//fim do for
+    }//fim do listar pessoa
 
     private static void ListarCarro() {
-        System.out.println("Carro");
-    }
+        System.out.println("Listar Carros");
+        for (Carro carro : cadCarro.getCarros()) {
+            System.out.println(carro.toString());
+        }//fim do for
+    }//fim do listar carros
 
     private static void DeletaPessoa() {
-        System.out.println("Pessoa");
-    }
+        System.out.println("Deletar Pessoas");
+        boolean delCPF = false;
+        do {
+            System.out.println("Informe o cpf da pessoa a ser removida: ");
+            String cpf = leia.nextLine();
+            delCPF = Validadores.isCPF(cpf);
+            if (delCPF) {
+                Pessoa p = cadPessoa.getPessoaCPF(cpf);
+                if (p != null) {
+                    System.out.println("Deseja deletar " + p.getNome() + "?");
+                    System.out.println("1-SIM / 2-NÃO");
+                    System.out.println("Digite aqui: ");
+                    int op = leiaNumInt();
+                    if (op == 1) {
+                        cadPessoa.removePessoa(p);
+                        System.out.println("Velorio encomendádo!!!");
+                        delCPF = false;
+                    } else {
+                        System.out.println("Operação cancelada pelo usuário.");
+                        delCPF = false;
+                    }
+                } else {
+                    System.out.println("CPF não cadastrado!");
+                    Deukk();
+                }
+            } else {
+                System.out.println("CPF inválido");
+                delCPF = true;
+            }
+        } while (delCPF);
+    }//fim deletar pessoa
 
     private static void DeletaCarro() {
         System.out.println("Macaco");
+    }
+
+    private static boolean Deukk() {
+        System.out.println("1-Tentar novamente.");
+        System.out.println("2-Cancelar .");
+        System.out.println("Digite aqui");
+        int op = leiaNumInt();
+        if (op == 2) {
+            return false;
+        }
+        return true;
     }
 
 }//fim da public class
